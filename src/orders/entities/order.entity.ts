@@ -1,30 +1,47 @@
+import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   Entity,
   JoinTable,
   ManyToMany,
+  ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-
-export class Order {
+import { ItemEntity } from './item.entity';
+@Entity()
+export class OrderEntity {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
-  status;
+  status: string;
+  @Column()
+  paymentMethod: string;
+  @Column()
+  subtotal: number;
+  @Column()
+  total: number;
   @Column({ unique: true })
-  sku;
+  codeDiscount: string;
   @Column()
-  paymentMethod;
+  discount: number;
   @Column()
-  total;
+  idRepartidor: number;
+
   @Column()
-  subtotal;
-  @Column({ nullable: true })
-  codeDiscount;
-  @Column({ nullable: true })
-  discount;
-  @Column()
-  idRepartidor;
-  @Column()
-  nameRepatidor;
+  nameRepartidor: string;
+  // @Column()
+  // idClient: number;
+  @JoinTable() // 👈 Join the 2 tables - only the OWNER-side does this
+  @ManyToMany(
+    (type) => ItemEntity,
+    (item) => item.orders, // what is "coffee" within the Flavor Entity
+    {
+      cascade: true,
+    },
+  ) // 👈
+  items: ItemEntity[];
+
+  @ManyToOne((type) => User, (user) => user.order)
+  user: any;
 }

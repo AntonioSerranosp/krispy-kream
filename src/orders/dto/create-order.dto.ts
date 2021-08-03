@@ -1,9 +1,9 @@
-import { IsInt, IsString } from 'class-validator';
+import { IsInt, IsNumber, IsObject, IsString } from 'class-validator';
+import { ItemEntity } from '../entities/item.entity';
+
 export class CreateOrderDto {
   @IsString()
   status: string;
-  @IsString()
-  sku: string;
   @IsString()
   paymentMethod: string;
   @IsInt()
@@ -12,10 +12,14 @@ export class CreateOrderDto {
   subtotal: number;
   @IsString()
   codeDiscount?: string;
-  @IsInt()
+  @IsNumber()
   discount?: number;
   @IsInt()
-  idRepartidor;
+  idRepartidor: number;
+
   @IsString()
-  nameRepatidor;
+  nameRepartidor: string;
+  // @IsInt()
+  // idClient: number;
+  items: ItemEntity[];
 }
